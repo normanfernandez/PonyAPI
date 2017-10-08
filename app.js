@@ -2,12 +2,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-var ponies = [{
+const defaultPony = {
 	name : "Twiligth Sparkle",
 	ponyStyle : {
 		color : "purple"
 	}
-}];
+}
+
+var ponies = [defaultPony];
 
 var port = process.env.PORT || 3000;
 
@@ -23,10 +25,16 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/pony', (req, res) => {
-	res.send(ponies);
+	res.status(200).send(ponies);
 });
 
 app.post('/api/pony', (req, res) => {
 	ponies.push(req.body);
-	res.end(JSON.stringify(res.body), null, 2);
+	res.status(201).send();
+});
+
+app.delete('/api/pony', (req, res) => {
+	ponies = [];
+	ponies.push(defaultPony);
+	res.status(204).send();
 });
